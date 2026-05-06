@@ -1,0 +1,11 @@
+# Recommended: Python script
+python load_sample_data.py
+
+# Or: Direct API
+curl -X POST http://localhost:8000/api/seed/load
+
+# Or: Bash (classic)
+bash load_sample_data.sh
+
+# Clear data
+python load_sample_data.py --clear

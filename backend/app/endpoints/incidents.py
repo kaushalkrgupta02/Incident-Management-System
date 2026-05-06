@@ -256,6 +256,8 @@ async def submit_rca(incident_id: UUID, rca_data: RCACreate, db: AsyncSession = 
 
     db.add(rca)
     await db.flush()
+    await db.commit()
+    await db.refresh(rca)
 
     log_incident_event(
         str(incident_id),

@@ -1,6 +1,9 @@
 import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.endpoints.incidents import router as incidents_router
+from app.db.postgres import init_db
+from app.services.metrics import print_throughput_metrics
 
 
 app = FastAPI(
@@ -17,8 +20,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(incidents_router)
 
-# app.include_router(incidents_router)
+
+@app.on_event("startup")
+async def startup():
+    await init_db()
+    asyncio.create_task(print_throughput_metrics())
+
 
 @app.get("/health")
 async def health():
